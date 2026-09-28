@@ -1,4 +1,19 @@
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: pharmacy-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
   kafka:
     image: apache/kafka:3.8.0
     container_name: pharmacy-kafka
@@ -29,3 +44,4 @@ services:
 
 volumes:
   kafka-data:
+  redis-data:

@@ -14,6 +14,18 @@ spring:
         enable.idempotence: true
         spring.json.trusted.packages: com.example.pharmacyservice.event
         spring.json.add.type.headers: false
+  # Redis làm Cache Provider (tương đương application.properties:
+  # spring.cache.type=redis, spring.data.redis.host=localhost, spring.data.redis.port=6379)
+  cache:
+    type: redis
+    redis:
+      time-to-live: 10m
+      key-prefix: ""
+      use-key-prefix: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
   # fallback datasource nếu Config Server chưa sẵn sàng (giá trị chính từ pharmacy-service.yml trên GitHub)
   datasource:
     url: jdbc:postgresql://localhost:5432/pharmacy_db
