@@ -19,7 +19,7 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 10m
+      time-to-live: 60m
       key-prefix: ""
       use-key-prefix: true
   data:

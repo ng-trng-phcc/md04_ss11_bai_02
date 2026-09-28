@@ -16,7 +16,8 @@ import java.util.Map;
 
 /**
  * Redis làm Cache Provider: value lưu dưới dạng JSON (dễ đọc qua redis-cli),
- * key dạng String "medicines::&lt;id&gt;". TTL mặc định 10 phút để tránh stale data.
+ * key dạng String "medicines::&lt;id&gt;". TTL 60 phút: giá thuốc có thể đổi nên
+ * không cache quá lâu; khi sửa giá thì @CacheEvict xóa key ngay lập tức.
  *
  * Cache "medicines" dùng typed serializer JacksonJsonRedisSerializer(MedicineDto)
  * nên JSON đọc/ghi đối xứng, không cần @class type info, không cần unsafe typing.
@@ -28,7 +29,7 @@ public class RedisCacheConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10))
+                .entryTtl(Duration.ofMinutes(60))
                 .disableCachingNullValues()
                 .serializeKeysWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
